@@ -24,16 +24,16 @@ namespace WpfApplication3
         MediaElement mediaElement = new MediaElement();
         //MainWindow mainwindow = new MainWindow();
         DispatcherTimer timer = null;
-        public static  double sliderPositionValue;
-        public static  double sliderMaximum;
+        public static double sliderPositionValue;
+        public static double sliderMaximum;
         public static int playstate;
         public static string currenTime;
         public static string totalTime;
 
         public Window1()
-        { 
+        {
             InitializeComponent();
-            
+
             mediaElement.LoadedBehavior = MediaState.Manual;
             mediaElement.MediaOpened += mediaElement_MediaOpened;     //注册MediaOpened事件
             mediaElement.MediaEnded += mediaElement_MediaEnded;       //注册MediaEnded事件
@@ -45,50 +45,50 @@ namespace WpfApplication3
         public void stop()
         {
             this.mediaElement.Stop();
-            
+
             mediaElement.Close();
             playstate = 0;
             //this.Close();
             //listBox.IsEnabled = true;
         }
 
-       public void play()
+        public void play()
         {
-            if (MainWindow.fileName != "" && playstate==0)
+            if (MainWindow.fileName != "" && playstate == 0)
             {
                 Module.readFile();
                 mediaElement.Source = new Uri(MainWindow.fileName, UriKind.Relative);
-                
+
                 mediaElement.Play();
 
                 if (FullScreenHelper.IsFullscreen(this))
-                   FullScreenHelper.ExitFullscreen(this);
+                    FullScreenHelper.ExitFullscreen(this);
                 else
                     FullScreenHelper.GoFullscreen(this);
                 mediaElement.Width = ActualWidth;
                 mediaElement.Height = ActualWidth;
-                playstate = 1;            
+                playstate = 1;
                 return;
-              
+
             }
-            if( playstate==2)
+            if (playstate == 2)
             {
                 mediaElement.Play();
-                playstate = 1;              
+                playstate = 1;
             }
         }
 
 
         public void pause()
-        {          
-                mediaElement.Pause();
-                playstate = 2;
-                  
+        {
+            mediaElement.Pause();
+            playstate = 2;
+
         }
 
         public void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            
+
             mediaElement.Width = ActualWidth;
             mediaElement.Height = ActualHeight;
         }
@@ -107,7 +107,7 @@ namespace WpfApplication3
             //单曲循环
             mediaElement.Position = new TimeSpan();
             mediaElement.Play();
-            
+
             //列表循环
             //for (int i = 0; i < MainWindow.list.Count; i++)
             //{
@@ -148,15 +148,15 @@ namespace WpfApplication3
         /// <param name="e"></param>
         public void mediaElement_MediaOpened(object sender, RoutedEventArgs e)
         {
-           // MessageBox.Show("22");
+            // MessageBox.Show("22");
             sliderMaximum = mediaElement.NaturalDuration.TimeSpan.TotalSeconds;
-            totalTime = mediaElement.NaturalDuration.ToString().Substring(0,8);
+            totalTime = mediaElement.NaturalDuration.ToString().Substring(0, 8);
             //媒体文件打开成功
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(0.05);
             timer.Tick += new EventHandler(timer_tick);
             timer.Start();
-            
+
         }
 
         public void timer_tick(object sender, EventArgs e)
@@ -173,7 +173,7 @@ namespace WpfApplication3
             //totalTime = hour + ":" + minute + ":" + second;
             //获取影片当前状态时间，格式为00:00:00
             //totalTime = mediaElement.Position.ToString();
-            currenTime = mediaElement.Position.ToString().Substring(0,8);
+            currenTime = mediaElement.Position.ToString().Substring(0, 8);
         }
 
         public void FastForward()
@@ -181,7 +181,7 @@ namespace WpfApplication3
             mediaElement.Position = mediaElement.Position + TimeSpan.FromSeconds(10);
         }
 
-        
+
 
         public void Back()
         {
