@@ -40,12 +40,13 @@ namespace WpfApplication3.Mcu
                 //Debug.WriteLine(ModbusUdp.ByteToHexStr(data));
 
                 //Thread.Sleep(1000);
-                Thread.Sleep(50);
+                Thread.Sleep(5);
                 High[0] += 3;
                 High[1] += 3;
                 High[2] += 3;
-                data = ModbusUdp.MBReqWriteHigh(High[0], High[1], High[2]);
+                //data = ModbusUdp.MBReqWriteHigh(10,3,High);
                 myMcu.McuSend(data, data.Length);
+
                 Debug.WriteLine("McuTestTask...");
                 //Debug.WriteLine(ModbusUdp.ByteToHexStr(data));
             }
@@ -64,6 +65,30 @@ namespace WpfApplication3.Mcu
             myMcuUdp.UdpSetReceiveCallBack(new McuUdp.UdpReceive(SetMcuReceiveFun));
         }
         //MCU数据发送函数
+        public void McuSendConnect()
+        {
+            byte[] send_pack = ModbusUdp.MBReqConnect();
+            McuSend(send_pack, send_pack.Length);
+        }
+
+        public byte[] McuSendRead(ushort addr, ushort len)
+        {
+            byte[] send_pack = ModbusUdp.MBReqConnect();
+            McuSend(send_pack, send_pack.Length);
+
+            //Timeout = 300；
+            //while （timeout--）
+            //{ //等待应答
+            //    if（应答成功）
+            //    {
+            //        return get_data;
+            //    }
+            //    sleep(1);
+            //}
+
+            return null;
+        }
+
         public int McuSend(byte[] Data, int Len)
         {
             if (myMcuUdp.UdpConnectCompleteFlag.Value)
@@ -181,7 +206,7 @@ namespace WpfApplication3.Mcu
                 {
                     if (!UdpConnectCompleteFlag.Value)
                     {
-                        data = ModbusUdp.MBReqConnect;
+                        data = ModbusUdp.MBReqConnect();
                         mySocket.SendTo(data, data.Length, SocketFlags.None, BroadcastRemotePoint);
                         Debug.WriteLine("Search udp server...");
                     }

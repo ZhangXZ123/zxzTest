@@ -20,6 +20,8 @@ namespace WpfApplication3
         public static byte YY;
         public static byte MM;
         public static byte DD;
+        public static byte HH;
+        public static byte mm;
         public static byte deadlineYY;             //注册后的期限年
         public static byte deadlineMM;             //注册后的期限月
         public static byte deadlineDD;             //注册后的期限日
@@ -27,7 +29,6 @@ namespace WpfApplication3
         public static SerialPort com1 = new SerialPort();
         public static byte[] actionFile;
         public static byte[] effectFile;
-
 
 
         /// <summary>
@@ -73,6 +74,25 @@ namespace WpfApplication3
             }
         }
 
+        public static void GetNowTime()
+        {
+            System.DateTime currentDateTime = new System.DateTime();
+            currentDateTime = System.DateTime.Now;    //获取当前时间年月日时分秒
+            //int years = currentTime.Year;         //获取当前年
+            //int months = currentTime.Month;       //获取当前月
+            //int days = currentTime.Day;           //获取当前日
+
+            string strYear = currentDateTime.ToString("yy");             //获取当前年的后两位
+
+            YY = Convert.ToByte(strYear);           //将字符串strYear转换成byte型             
+            MM = (byte)currentDateTime.Month;           //将int型当前月转换成byte型
+            DD = (byte)currentDateTime.Day;             //将int型当前日转换成byte型
+            HH = (byte)currentDateTime.Hour;       //将int型当前时转换成byte型 
+            mm = (byte)currentDateTime.Minute;     //将int型当前分转换成byte型
+
+        }
+
+
 
 
         /// <summary>
@@ -80,12 +100,14 @@ namespace WpfApplication3
         /// </summary>
         public static void GetChipId()
         {
-            System.DateTime currentTime = new System.DateTime();
-            currentTime = System.DateTime.Now;    //获取当前时间年月日时分秒
-            string strYear = currentTime.ToString("yy");             //获取当前年的后两位
-            YY = Convert.ToByte(strYear);    //将字符串strYear转换成byte型             
-            MM = (byte)currentTime.Month;    //将int型当前月转换成byte型
-            DD = (byte)currentTime.Day;     //将int型当前日转换成byte型
+            //System.DateTime currentTime = new System.DateTime();
+            //currentTime = System.DateTime.Now;    //获取当前时间年月日时分秒
+            //string strYear = currentTime.ToString("yy");             //获取当前年的后两位
+            //YY = Convert.ToByte(strYear);    //将字符串strYear转换成byte型             
+            //MM = (byte)currentTime.Month;    //将int型当前月转换成byte型
+            //DD = (byte)currentTime.Day;     //将int型当前日转换成byte型
+
+            GetNowTime();
 
             byte[] data_buf = new byte[16];
             int data_len = 0;
@@ -175,20 +197,20 @@ namespace WpfApplication3
                 checkOutFile[5] ^= 136;
                 checkOutFile[6] ^= 153;
 
+                GetNowTime();
+                //System.DateTime currentDateTime = new System.DateTime();
+                //currentDateTime = System.DateTime.Now;    //获取当前时间年月日时分秒
+                ////int years = currentTime.Year;         //获取当前年
+                ////int months = currentTime.Month;       //获取当前月
+                ////int days = currentTime.Day;           //获取当前日
 
-                System.DateTime currentDateTime = new System.DateTime();
-                currentDateTime = System.DateTime.Now;    //获取当前时间年月日时分秒
-                //int years = currentTime.Year;         //获取当前年
-                //int months = currentTime.Month;       //获取当前月
-                //int days = currentTime.Day;           //获取当前日
+                //string strYear = currentDateTime.ToString("yy");             //获取当前年的后两位
 
-                string strYear = currentDateTime.ToString("yy");             //获取当前年的后两位
-
-                YY = Convert.ToByte(strYear);           //将字符串strYear转换成byte型             
-                MM = (byte)currentDateTime.Month;           //将int型当前月转换成byte型
-                DD = (byte)currentDateTime.Day;             //将int型当前日转换成byte型
-                byte HH = (byte)currentDateTime.Hour;       //将int型当前时转换成byte型 
-                byte mm = (byte)currentDateTime.Minute;     //将int型当前分转换成byte型
+                //YY = Convert.ToByte(strYear);           //将字符串strYear转换成byte型             
+                //MM = (byte)currentDateTime.Month;           //将int型当前月转换成byte型
+                //DD = (byte)currentDateTime.Day;             //将int型当前日转换成byte型
+                //byte HH = (byte)currentDateTime.Hour;       //将int型当前时转换成byte型 
+                //byte mm = (byte)currentDateTime.Minute;     //将int型当前分转换成byte型
 
                 checkOutFile[0] ^= 52;
                 checkOutFile[1] ^= 117;
@@ -236,18 +258,26 @@ namespace WpfApplication3
         public void SendBytesData(SerialPort serialPort, byte data1, byte data2, byte data3, byte data4, byte data5)
         {
             //byte[] bytesSend = System.Text.ASCIIEncoding.Default.GetBytes(textBox.Text );
-            byte[] bytesSend = new byte[9];
-            bytesSend[0] = 0xFF;
-            bytesSend[1] = 0x4a;
-            bytesSend[2] = data1;
-            bytesSend[3] = data2;
-            bytesSend[4] = data3;
-            bytesSend[5] = data4;
-            bytesSend[6] = data5;
-            bytesSend[7] = 0x01;
-            bytesSend[8] = 0xEE;
-            //serialPort.Write(bytesSend,0,bytesSend.Length);          
-            serialPort.Write(bytesSend, 0, 9);
+            try
+            {
+                byte[] bytesSend = new byte[9];
+                bytesSend[0] = 0xFF;
+                bytesSend[1] = 0x4a;
+                bytesSend[2] = data1;
+                bytesSend[3] = data2;
+                bytesSend[4] = data3;
+                bytesSend[5] = data4;
+                bytesSend[6] = data5;
+                bytesSend[7] = 0x01;
+                bytesSend[8] = 0xEE;
+                //serialPort.Write(bytesSend,0,bytesSend.Length);          
+                serialPort.Write(bytesSend, 0, 9);
+            }
+            catch
+            {
+                MessageBox.Show("发送失败");
+
+            }
         }
 
 
@@ -280,6 +310,7 @@ namespace WpfApplication3
                 lastt2 = 0;
             }
             SendBytesData(com1, last1, last2, last3, lastt1, lastt2);
+            //sendData(last1,last2,last3,lastt1,lastt2);
         }
 
 
@@ -307,7 +338,7 @@ namespace WpfApplication3
             }
             catch
             {
-
+                MessageBox.Show("open erro");
             }
 
         }
