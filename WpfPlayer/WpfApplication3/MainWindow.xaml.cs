@@ -32,12 +32,15 @@ namespace WpfApplication3
         Window1 win = new Window1();
         DispatcherTimer timer = null;        
         Module module = new Module();
-        private Mcu.McuTest myMcuTest = new Mcu.McuTest(); //for test class mcu
+        //private Mcu.McuTest myMcuTest = new Mcu.McuTest(); //for test class mcu
+        UdpInit  myUdpInit = new UdpInit();
+
         public MainWindow()
         {
             InitializeComponent();
+            myUdpInit.udpInit();
             //InitListBox(); // disable for bug
-            Module.SerialInit();
+           // Module.SerialInit();
             //System.Windows.Controls.Slider.AddHandler(Slider.MouseLeftButtonUp,new System.Windows.Forms.MouseEventHandler(slider_MouseLeftButtonUp),true);     
             //mediaElement.LoadedBehavior = MediaState.Manual;
             //(Content as Grid).Children.Add(mediaElement);

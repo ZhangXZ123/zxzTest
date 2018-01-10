@@ -40,23 +40,14 @@ namespace WpfApplication3.Mcu
 
         public static byte[] MBReqUuid()
         {
-            byte[] Data = new byte[3];
+            byte[] Data = new byte[1];
             Data[0] = 0; //read
-            Data[1] = r_rom_uuid.Addr; //addr
-            Data[2] = r_rom_uuid.Len; //addr
-            return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.Control, Data));
+            return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.GetId, Data));
         }
 
-        public static byte[] MBReqWriteHigh(byte High1, byte High2, byte High3)
+        public static byte[] MBReqWrite( byte[] Data)
         {
-            byte[] Data = new byte[6];
-            Data[0] = 1; //write
-            Data[1] = rw_ram_high.Addr; //addr
-            Data[2] = rw_ram_high.Len; //addr
-            Data[3] = High1;
-            Data[4] = High2;
-            Data[5] = High3;
-            return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.Control, Data));
+            return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.Write, Data));
         }
 
         public static byte[] MBRsp(byte[] Adu)
@@ -76,9 +67,17 @@ namespace WpfApplication3.Mcu
                         switch (FunctionCode)
                         {
                             case (byte)MBFunctionCode.Connect:
-                                break;
+                                return GetData(Adu);                                
                             case (byte)MBFunctionCode.Monitor:
                                 break;
+                            case (byte)MBFunctionCode.Read:
+                                return GetData(Adu);
+                            case (byte)MBFunctionCode.Write:
+                                return GetData(Adu);
+                            case (byte)MBFunctionCode.ReadChip:
+                                return GetData(Adu);
+                            case (byte)MBFunctionCode.WriteChip:
+                                return GetData(Adu);
                             case (byte)MBFunctionCode.Control:
                                 return GetData(Adu);
                             default:
@@ -93,14 +92,17 @@ namespace WpfApplication3.Mcu
             return null;
         }
 
-        enum MBFunctionCode : byte  //显示指定枚举的底层数据类型
+        public enum MBFunctionCode : byte  //显示指定枚举的底层数据类型
         {
-            Connect = 0x00,
-            Monitor = 0x01,
-            Control = 0x03,
-            ConnectError = Connect + 0x80,
-            MonitorError = Monitor + 0x80,
-            ControlError = Control + 0x80
+            Connect = 100,  //100
+            Monitor = 101,
+            Read = 102,
+            Write = 103,
+            ReadChip=104,
+            WriteChip=105,
+            GetId=106,
+            GetTimeCode=107,
+            Control = 200,
         }
 
         enum MBAddress : byte  //显示指定枚举的底层数据类型
@@ -109,13 +111,96 @@ namespace WpfApplication3.Mcu
             Reserve = 0xff
         }
 
-        public static byte[] MBReqConnect = GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.Connect, null));
+        //public static byte[] MBReqConnect = GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.Connect, null));
+
+                   
+        /// <summary>
+        /// 发送连接请求
+        /// </summary>
+        /// <returns></returns>
+        public static byte[] MBReqConnect()
+        {
+
+            int password = 123;
+            byte[] Data = System.BitConverter.GetBytes(password);
+            Array.Reverse(Data);
+
+            return  GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.Connect, Data));
+        }
+
+        /// <summary>
+        /// 返回Read的ADU
+        /// </summary>
+        /// <param name="Data">地址+长度+数据</param>
+        /// <returns></returns>
+        public static byte[] MBReqRead(byte [] Data)
+        {
+           
+            return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.Read, Data));
+        }
+
+
+        /// <summary>
+        /// 将地址跟数据长度和数据合并成一个数组并返回
+        /// </summary>
+        /// <param name="addr">地址</param>
+        /// <param name="len">数据长度</param>
+        /// <param name="data">数据</param>
+        /// <returns></returns>
+        public static byte[] ArrayAdd(ushort addr, ushort len,byte [] data)
+        {
+            byte[] Data = new byte[4+data.Length];
+
+            byte[] byteAddr = System.BitConverter.GetBytes(addr);
+            Array.Reverse(byteAddr);
+            byte[] byteLen = System.BitConverter.GetBytes(len);
+            Array.Reverse(byteLen);
+            byteAddr.CopyTo(Data, 0);
+            byteLen.CopyTo(Data, byteAddr.Length);
+            data.CopyTo(Data,byteAddr.Length +byteLen.Length);
+            return Data;
+
+        }
+
+        /// <summary>
+        /// 返回ReadChip的ADU
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public static byte[] MBReqReadChip(byte[] Data)
+        {
+           
+            return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.ReadChip, Data));
+        }
+
+
+        /// <summary>
+        /// 返回WriteChip的ADU
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public static byte[] MBReqWriteChip( byte[] Data)
+        {
+           
+            return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.WriteChip, Data));
+        }
+
+
+
         public static byte[] MBReqMonitor(byte MonitorTick)
         {
             byte[] Data = new byte[1];
             Data[0] = MonitorTick;
             return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.Monitor, Data));
         }
+
+        public static byte[] MBReqGetTimeCode(byte [] Data)
+        {
+            
+            return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.GetTimeCode, Data));
+        }
+
+
         public static byte[] MBReqControl(byte RW, byte Addr, byte Len, byte[] Data)
         {
             if (RW == 0) //read
@@ -135,6 +220,8 @@ namespace WpfApplication3.Mcu
             }
             return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.Control, Data));
         }
+
+
         public static byte[] MBReqControlTest()
         {
             byte[] WriteData = new byte[1];
@@ -347,7 +434,6 @@ namespace WpfApplication3.Mcu
         };
 
         public static ushort Get(byte[] CRCData, int usDataLen) /* 函数以unsigned short 类型返回CRC */
-
         {
             byte puchMsg = CRCData[0];
             int i = 0;

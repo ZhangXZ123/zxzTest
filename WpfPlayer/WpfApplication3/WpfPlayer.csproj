@@ -89,6 +89,9 @@
     <Compile Include="Mcu\Mcu.cs" />
     <Compile Include="Mcu\ModbusUdp.cs" />
     <Compile Include="Module.cs" />
+    <Compile Include="UdpConnect.cs" />
+    <Compile Include="UdpInit.cs" />
+    <Compile Include="UdpSend.cs" />
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
