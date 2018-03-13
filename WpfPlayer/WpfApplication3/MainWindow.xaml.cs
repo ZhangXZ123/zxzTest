@@ -39,6 +39,7 @@ namespace WpfApplication3
         {
             InitializeComponent();
             Module.readFile();
+            Module.ReadUuidFile();
             myUdpInit.udpInit();
 
 
@@ -313,7 +314,7 @@ namespace WpfApplication3
         private void button2_Click(object sender, RoutedEventArgs e)
         {
             UdpSend.flagSend = (byte)Mcu.ModbusUdp.MBFunctionCode.GetId;
-            
+            UdpConnect.registerFlag = true;
         }
     }
 }

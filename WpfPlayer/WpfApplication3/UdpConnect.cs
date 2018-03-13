@@ -10,7 +10,7 @@ using System.Windows;
 using System.Diagnostics;
 using WpfApplication3.Mcu;
 using System.Windows.Threading;
-
+using System.IO;
 namespace WpfApplication3
 {
     public class UdpConnect
@@ -20,6 +20,7 @@ namespace WpfApplication3
       public static string strTimeCode;
       public byte monitorTickRx;
       public byte monitorTickTimeOut;
+      public static bool registerFlag;
 
         UdpSend mysend = new UdpSend();
      
@@ -138,23 +139,56 @@ namespace WpfApplication3
 
             if (RecData[0] == 0xff && RecData[1] == 0x6a)       //判断uuid应答
             {
-                //monitorTickRx = RecData[2];
-                
-                Debug.WriteLine("校验uuid");
                 string str = System.Text.Encoding.Default.GetString(RecData);
+                //monitorTickRx = RecData[2];
+                if (registerFlag==true)      //将初始uuid保存在文件当中
+                {
+                    File.WriteAllText(@"C: \Users\shuqee\Desktop\shuqee.bin",str);
+                    registerFlag = false;
+                }
+
+                Debug.WriteLine("校验uuid");
                 
-                //if(str==Module.uuidFile)
-                //{
+                
+                if(str==Module.uuidFile)      //判断uuid是否与初始的一致
+                {
+                    MessageBox.Show("uuid正确");
+                    //Thread.Sleep(1000);
+                    UdpSend.flagSend = (byte)Mcu.ModbusUdp.MBFunctionCode.ReadChip;
+                  
+                }
+                else
+                {
+                    MessageBox.Show("uuid不正确");
 
-                //}
-                //else
-                //{
-                //    MessageBox.Show("uuid不正确");
-
-                //}
-                // if(RecData[3]==)
-
+                }
             }
+
+            if (RecData[0] == 0xff && RecData[1] == 0x68)
+            {
+                MessageBox.Show("校验日期");
+                string reyear = "20" + RecData[6];
+                string remonth = RecData[7].ToString();
+                string reday = RecData[8].ToString();
+                string redate = reyear + "-" + remonth + "-" + reday;
+                DateTime dateNow = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+                DateTime getDate ;
+                try
+                {
+                     getDate = Convert.ToDateTime(redate);
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine(e);
+                    getDate = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+                }
+
+                TimeSpan ts = getDate - dateNow;
+                int getday = ts.Days;
+                MessageBox.Show(getday.ToString());
+                MessageBox.Show("剩余天数为{0}",getday.ToString());
+            }
+
 
             RecData = ModbusUdp.MBRsp(RecData);
             Debug.WriteLine(ModbusUdp.ByteToHexStr(RecData));

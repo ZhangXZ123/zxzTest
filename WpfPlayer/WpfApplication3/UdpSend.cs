@@ -128,7 +128,7 @@ namespace WpfApplication3
             byte[] Data;           //最终发送的数据
 
             addr = 0;
-            len = 32;
+            len = 3;
             data = new byte[0];
 
             array = Mcu.ModbusUdp.ArrayAdd(addr, len, data);
@@ -209,6 +209,7 @@ namespace WpfApplication3
                             //array = Mcu.ModbusUdp.ArrayAdd(addr, len, data);
                             //Data = Mcu.ModbusUdp.MBReqWriteChip(array);
                             Data = SendReadChip();
+                            flagSend = 0;
                             break;
                         case 105:               //write_falsh
                             //addr = 0;
