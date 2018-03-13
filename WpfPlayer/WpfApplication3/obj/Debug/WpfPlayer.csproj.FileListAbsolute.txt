@@ -1,5 +1,6 @@
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\WpfApplication3.exe.config
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\WpfApplication3.exe
+D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\WpfApplication3.pdb
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\Microsoft.Expression.Drawing.dll
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\de\Microsoft.Expression.Drawing.resources.dll
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\es\Microsoft.Expression.Drawing.resources.dll
@@ -10,7 +11,6 @@ D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\ko\Microsoft.Expression.Dra
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\ru\Microsoft.Expression.Drawing.resources.dll
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\zh-Hans\Microsoft.Expression.Drawing.resources.dll
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\zh-Hant\Microsoft.Expression.Drawing.resources.dll
-D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfPlayer.csprojResolveAssemblyReference.cache
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\Interop.DAO.dll
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\Interop.MediaPlayer.dll
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\Interop.MSDATASRC.dll
@@ -32,4 +32,4 @@ D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfApplication3.Properties.
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfPlayer.csproj.GenerateResource.Cache
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfApplication3.exe
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfApplication3.pdb
-D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\WpfApplication3.pdb
+D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfPlayer.csprojResolveAssemblyReference.cache

@@ -38,9 +38,19 @@ namespace WpfApplication3
         public MainWindow()
         {
             InitializeComponent();
+            Module.readFile();
             myUdpInit.udpInit();
-            //InitListBox(); // disable for bug
-           // Module.SerialInit();
+
+
+            //udp程序启动定时器
+            //timer = new DispatcherTimer();
+            //timer.Interval = TimeSpan.FromSeconds(0.01);   //定时器周期为50ms 
+            //timer.Tick += new EventHandler(timer_tick);
+            //timer.Start();
+
+            //Module.readFile();
+            InitListBox(); // disable for bug
+            // Module.SerialInit();
             //System.Windows.Controls.Slider.AddHandler(Slider.MouseLeftButtonUp,new System.Windows.Forms.MouseEventHandler(slider_MouseLeftButtonUp),true);     
             //mediaElement.LoadedBehavior = MediaState.Manual;
             //(Content as Grid).Children.Add(mediaElement);
@@ -56,6 +66,7 @@ namespace WpfApplication3
             //win.Visibility = Visibility.Visible;
             
             win.pause();
+            
         }
 
         public static List <string> list=new List<string >();
@@ -66,20 +77,22 @@ namespace WpfApplication3
         private  void InitListBox()
         {
             //获取软件当前目录的avi文件
-            string[] path = Directory.GetFiles( Directory.GetCurrentDirectory(), "*.avi");
-            //string[] path = Directory.GetFiles(@"d:\电影", "*.avi");
+            //string[] path = Directory.GetFiles( Directory.GetCurrentDirectory(), "*.avi");
+            string[] path = Directory.GetFiles(@"d:\电影", "*.avi");
             for (int i = 0; i < path.Length; i++)
             {          
                 string videoName = System.IO.Path.GetFileName(path[i]);
                 listBox.Items.Add(videoName);
                 list.Add(path[i]);
             }
-            path = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.mp4");
-            //path = Directory.GetFiles(@"d:\电影", "*.mp4");
+
+            //path = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.mp4");
+            path = Directory.GetFiles(@"d:\电影", "*.mp4");
             for (int i = 0; i < path.Length; i++)
             {
                 //listBox.Items.Add(path[i].Substring(path[i].LastIndexOf('\\') + 1));
-                string videoName = System.IO.Path.GetFileName(path[i]);
+                string videoName = System.IO.Path.GetFileName(path[i]);   //获取当前路径的文件名包含后缀
+                //listBox.Items.Add(videoName.Substring(0,videoName.LastIndexOf('.')));
                 listBox.Items.Add(videoName);
                 list.Add(path[i]);
             }
@@ -120,7 +133,8 @@ namespace WpfApplication3
                 timer = new DispatcherTimer();
                 timer.Interval = TimeSpan.FromSeconds(0.05);   //定时器周期为50ms 
                 timer.Tick += new EventHandler(timer_tick);
-                timer.Start();        
+                timer.Start();
+                        
             }
         }
 
@@ -152,8 +166,9 @@ namespace WpfApplication3
             listBox.Items.Add(fileName.Substring(fileName.LastIndexOf('\\')+1));
          
         }
+        //public delegate void GreetingDelegate(double time);
 
-       
+
 
         /// <summary>
         /// 停止按钮
@@ -186,11 +201,17 @@ namespace WpfApplication3
         private void timer_tick(object sender, EventArgs e)
         { 
             Slider.Value = Window1.sliderPositionValue;        
-            //textBox.Text = Window1.sliderPositionValue.ToString();
+            ////textBox.Text = Window1.sliderPositionValue.ToString();
             Slider.Maximum = Window1.sliderMaximum;           
             textBox1.Text = Window1.currenTime+"/"+ Window1.totalTime;            
             module.FlimValue(Window1.sliderPositionValue);
+
+            //label1.Content = UdpConnect.strTimeCode;
+
+            //textBox1.Text = UdpConnect.strTimeCode;
         }
+
+      
 
         ///// <summary>
         ///// 将总秒数转换成时间格式00:00:00
@@ -248,9 +269,8 @@ namespace WpfApplication3
         {
             win.Back();
         }
-
-       
         
+
         /// <summary>
         /// 拖动进度条对播放状态进行控制
         /// </summary>
@@ -272,6 +292,28 @@ namespace WpfApplication3
             Window2 win2 = new Window2();
             win2.ShowDialog();
             //module.SendBytesData(module.com1,255,255,2,2,2);
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            byte[] Data=new byte[9];
+            Data[0] = 0xff;
+            Data[1] = 0x67;
+            Data[2] = 0x00;
+            Data[3] = 0xff;
+            Data[4] = 0x00;
+            Data[5] = 0x01;
+            Data[6] = 0x01;
+            Data[7] = 0xec;
+            Data[8] = 0x5c;
+
+            UdpSend.UdpSendData(Data, Data.Length, UdpInit.RemotePoint);
+        }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            UdpSend.flagSend = (byte)Mcu.ModbusUdp.MBFunctionCode.GetId;
+            
         }
     }
 }

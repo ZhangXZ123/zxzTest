@@ -47,7 +47,9 @@ namespace WpfApplication3.Mcu
 
         public static byte[] MBReqWrite( byte[] Data)
         {
-            return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.Write, Data));
+            //return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.Write, Data));
+
+            return GetADU((byte)MBAddress.Broadcast, GetPDU((byte)MBFunctionCode.Write, Data));
         }
 
         public static byte[] MBRsp(byte[] Adu)
@@ -137,8 +139,10 @@ namespace WpfApplication3.Mcu
         {
            
             return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.Read, Data));
-        }
 
+            //return GetADU((byte)MBAddress.Broadcast, GetPDU((byte)MBFunctionCode.Read, Data));
+        }
+  
 
         /// <summary>
         /// 将地址跟数据长度和数据合并成一个数组并返回
@@ -297,14 +301,14 @@ namespace WpfApplication3.Mcu
             {
                 if (ADU.Length >= 2)
                 {
-                    Crc16 = (ushort)(ADU[ADU.Length - 2] << 8 | ADU[ADU.Length - 1]);
+                    Crc16 = (ushort)(ADU[ADU.Length - 2] | ADU[ADU.Length - 1] << 8);
                     if (Crc16 == CRC16.Get(ADU, (ADU.Length - 2)))
                     {
                         return true;
                     }
                 }
             }
-            return true;
+            return false;
         }
 
         public static byte[] GetPDU(byte FunctionCode, byte[] Data)

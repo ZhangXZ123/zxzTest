@@ -20,6 +20,7 @@ namespace WpfApplication3.Mcu
             Thread ThreadMcuTest = new Thread(new ThreadStart(this.McuTestTask));
             ThreadMcuTest.IsBackground = true; //设置为后台线程
             ThreadMcuTest.Start();
+           
             //构造函数
         }
 

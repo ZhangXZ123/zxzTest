@@ -16,7 +16,13 @@ namespace WpfApplication3
     public class UdpConnect
     {
       public static bool flagValue = false;
-      UdpSend mysend = new UdpSend();
+      public static double TimeCode;
+      public static string strTimeCode;
+      public byte monitorTickRx;
+      public byte monitorTickTimeOut;
+
+        UdpSend mysend = new UdpSend();
+     
 
         public UdpConnect()
         {
@@ -31,7 +37,7 @@ namespace WpfApplication3
 
             //启动一个新的线程，执行方法this.ReceiveHandle，  
             //以便在一个独立的进程中执行数据接收的操作  
-            byte MonitorTick=0;
+            byte monitorTick=0;
             Thread thread = new Thread(new ThreadStart(this.ReceiveHandle));
             thread.IsBackground = true; //设置为后台线程
             thread.Start();
@@ -46,25 +52,48 @@ namespace WpfApplication3
                     data = Mcu.ModbusUdp.MBReqConnect();
                     UdpSend.UdpSendData(data, data.Length, UdpInit.BroadcastRemotePoint);
                     Debug.WriteLine("Search server");
+                    Debug.WriteLine(data);
                 }
 
-                //else
-                //{
-                //    if
-                //    //发送UDP心跳包
-                //    if (MonitorTick < 0xff)
-                //    {
-                //        MonitorTick++;
-                //    }
-                //    else
-                //    {
-                //        MonitorTick = 0;
-                //    }
-                //    data = ModbusUdp.MBReqMonitor(MonitorTick);     
-                //    UdpSend.UdpSendData(data, data.Length, UdpInit.RemotePoint);
-                //    Debug.WriteLine("Connect monitor...");
-                //}
-                    Thread.Sleep(1000);
+                else
+                {
+                    //发送UDP心跳包
+                    
+
+
+                    if (monitorTickRx != monitorTick)
+                    {
+                        if (monitorTickRx > 0)
+                        {
+                            
+                            monitorTickTimeOut++;
+                        }
+                    }
+                   
+
+                    if (monitorTickTimeOut == 3)     //计时超过3秒，重新连接
+                    {
+                        flagValue = false;
+                        monitorTick = 0;
+                        monitorTickRx = 0;
+                        monitorTickTimeOut = 0;
+                        Debug.WriteLine("Connect lose...");
+                    }
+
+                    if (monitorTick < 0xff)
+                        {
+                            monitorTick++;
+                        }
+                        else
+                        {
+                            monitorTick = 0;
+                        }
+                    
+                    data = ModbusUdp.MBReqMonitor(monitorTick);
+                    UdpSend.UdpSendData(data, data.Length, UdpInit.RemotePoint);                
+                    Debug.WriteLine("Connect monitor...");
+                }
+                Thread.Sleep(1000);
             }
 
         }
@@ -76,7 +105,56 @@ namespace WpfApplication3
             byte[] RecData;
             RecData = new byte[rlen];
             Array.Copy(data, 0, RecData, 0, rlen);
+            //Debug.WriteLine(RecData);
             Debug.WriteLine(ModbusUdp.ByteToHexStr(RecData));
+            if (RecData[0] == 0xff && RecData[1] == 0x6c)
+            {
+
+                //要发送数据格式
+                double hours = (RecData[6]) * 60 * 60;
+                double minutes = (RecData[7]) * 60;
+                double seconds = RecData[8];
+                double frame = RecData[9] / 24.000;
+
+                // s[i].ToString("X").Length < 2 ? "0" + s[i].ToString("X") : s[i].ToString("X"));
+                string strhours = RecData[6].ToString().Length <2 ? "0" + RecData[6].ToString() : RecData[6].ToString(); 
+                string strminutes= RecData[7].ToString().Length < 2 ? "0" + RecData[7].ToString() : RecData[7].ToString();
+                string strseconds= RecData[8].ToString().Length < 2 ? "0" + RecData[8].ToString() : RecData[8].ToString();
+                string strframe= RecData[9].ToString().Length < 2 ? "0" + RecData[9].ToString() : RecData[9].ToString();
+
+                strTimeCode = strhours + ":" + strminutes + ":" + strseconds + ":" + strframe;
+                //strTimeCode = RecData[6].ToString() + ":" + RecData[7].ToString() + ":" + RecData[8].ToString() + ":" + RecData[9].ToString();
+                TimeCode = hours + minutes + seconds + frame;
+                UdpSend.SendWrite(TimeCode);
+
+               //UdpSend.flagSend = (byte)Mcu.ModbusUdp.MBFunctionCode.Write;
+
+            }
+
+            if (RecData[0] == 0xff && RecData[1] == 0x65)        //判断心跳应答
+            {
+                monitorTickRx = RecData[2];
+            }
+
+            if (RecData[0] == 0xff && RecData[1] == 0x6a)       //判断uuid应答
+            {
+                //monitorTickRx = RecData[2];
+                
+                Debug.WriteLine("校验uuid");
+                string str = System.Text.Encoding.Default.GetString(RecData);
+                
+                //if(str==Module.uuidFile)
+                //{
+
+                //}
+                //else
+                //{
+                //    MessageBox.Show("uuid不正确");
+
+                //}
+                // if(RecData[3]==)
+
+            }
 
             RecData = ModbusUdp.MBRsp(RecData);
             Debug.WriteLine(ModbusUdp.ByteToHexStr(RecData));
@@ -85,8 +163,31 @@ namespace WpfApplication3
                 if (RecData[0] == 0 && RecData[1] == 0 && RecData[2] == 0x01 && RecData[3] == 0x41)
                 {
                     flagValue = true;
-                    UdpSend.flagSend = (byte)Mcu.ModbusUdp.MBFunctionCode.Write;
+                    //要发送数据格式
+                    UdpSend.flagSend = (byte)Mcu.ModbusUdp.MBFunctionCode.GetId;
                 }
+
+                if (RecData[0] == 0 && RecData[1] == 0xff && RecData[2] == 0 && RecData[3] == 0x1)
+                {
+                    while (true)
+                    {
+                        byte[] Data = new byte[8];
+                        Data[0] = 0xff;
+                        Data[1] = 0x64;
+                        Data[2] = 0x00;
+                        Data[3] = 0x00;
+                        Data[4] = 0x01;
+                        Data[5] = 0xc8;
+                        Data[6] = 0x65;
+                        Data[7] = 0xda;
+
+                        UdpSend.UdpSendData(Data, Data.Length, UdpInit.BroadcastRemotePoint);
+                        Thread.Sleep(1000);
+                    }
+                }
+
+               
+
             }
 
         }
@@ -98,14 +199,12 @@ namespace WpfApplication3
             
             while (true)
             {
-
                 if (UdpInit.mySocket == null || UdpInit.mySocket.Available < 1)
                 {
                     Thread.Sleep(10);
                     continue;
                 }
-
-                //跨线程调用控件  
+  
                 //接收UDP数据报，引用参数RemotePoint获得源地址 
                 try
                 {
@@ -114,9 +213,12 @@ namespace WpfApplication3
                     tx(rlen,data);
                     
                 }
-                catch
+                catch(Exception e)
                 {
-
+                    Debug.WriteLine(e);
+                    //data = Mcu.ModbusUdp.MBReqConnect();
+                    UdpSend.UdpSendData(Mcu.ModbusUdp.MBReqConnect(), Mcu.ModbusUdp.MBReqConnect().Length, UdpInit.BroadcastRemotePoint);
+                    Debug.WriteLine("Search server");
                 }
 
             }

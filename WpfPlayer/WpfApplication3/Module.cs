@@ -29,6 +29,7 @@ namespace WpfApplication3
         public static SerialPort com1 = new SerialPort();
         public static byte[] actionFile;
         public static byte[] effectFile;
+        public static string uuidFile;
 
 
         /// <summary>
@@ -92,6 +93,21 @@ namespace WpfApplication3
 
         }
 
+        public static void ReadUuidFile()
+        {
+            try
+            {
+                //读取校验文件“shuqee.bin”
+                //byte[] uuidFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\shuqee.bin");
+                 uuidFile = File.ReadAllText(@"C: \Users\shuqee\Desktop\shuqee.bin");
+            }
+            catch
+            {
+                MessageBox.Show("校验文件不存在，请把校验文件放在软件当前目录");
+            }
+            
+
+         }
 
 
 
@@ -206,7 +222,7 @@ namespace WpfApplication3
 
                 //string strYear = currentDateTime.ToString("yy");             //获取当前年的后两位
 
-                //YY = Convert.ToByte(strYear);           //将字符串strYear转换成byte型             
+                //YY = Convert.ToByte(strYear);               //将字符串strYear转换成byte型             
                 //MM = (byte)currentDateTime.Month;           //将int型当前月转换成byte型
                 //DD = (byte)currentDateTime.Day;             //将int型当前日转换成byte型
                 //byte HH = (byte)currentDateTime.Hour;       //将int型当前时转换成byte型 
@@ -351,18 +367,17 @@ namespace WpfApplication3
         {
             try
             {
-                //actionFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\A-D");                
+                actionFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\A-D");                
                 //actionFile = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\A-D");
-                actionFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-D");
+               // actionFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-D");
                 try
                 {
-                    // effectFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\A-T");
+                     effectFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\A-T");
                     //effectFile = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\A-T");
-                    effectFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-T");
+                    //effectFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-T");
                 }
                 catch
                 {
-
                     MessageBox.Show("特效文件不存在，请把A-T文件复制到当前目录");
                     effectFile = null;
                 }
@@ -372,7 +387,7 @@ namespace WpfApplication3
                 MessageBox.Show("动作文件不存在，请把A-D文件复制到当前目录");
                 actionFile = null;
             }
-            MessageBox.Show("读取完毕");
+           // MessageBox.Show("读取完毕");
         }
 
 
