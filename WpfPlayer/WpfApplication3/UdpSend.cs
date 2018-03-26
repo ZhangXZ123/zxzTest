@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using WpfApplication3.Mcu;
+using System.Windows;
 
 namespace WpfApplication3
 {
@@ -70,6 +71,76 @@ namespace WpfApplication3
 
         }
 
+        public static byte[] intToBytes(int value)
+        {
+            byte[] src = new byte[4];
+            src[0] = (byte)((value >> 24) & 0xFF);
+            src[1] = (byte)((value >> 16) & 0xFF);
+            src[2] = (byte)((value >> 8) & 0xFF);
+            src[3] = (byte)(value & 0xFF);
+            return src;
+        }
+
+        public static byte[] QuDong(byte data1,byte data2,byte data3)
+        {
+            byte[] data_buf = new byte[42];
+            //int data_len = 0;
+            byte[] src = new byte[4];
+            int X = data1 * 1089;
+            int Y = data2 * 1089;
+            int Z = data3 * 1406;
+            try
+            {
+                data_buf[0] = 0x55;
+                data_buf[1] = 0xaa;
+                data_buf[2] = 0;
+                data_buf[3] = 0;
+
+                data_buf[4] = 0x14;
+                data_buf[5] = 0x01;
+                data_buf[6] = 0;
+                data_buf[7] = 0;
+
+                data_buf[8] = 0x01;
+                data_buf[9] = 0xc9;
+                data_buf[10] = 0x01;
+                data_buf[11] = 0xc9;
+
+                data_buf[12] = 0;
+                data_buf[13] = 0;
+                data_buf[14] = 0;
+                data_buf[15] = 0x01;
+
+                data_buf[16] = 0;
+                data_buf[17] = 0;
+                data_buf[18] = 0;
+                data_buf[19] = 0x32;
+
+                src = intToBytes(X);
+                Array.Copy(src, 0, data_buf, 20, 4);
+
+                src = intToBytes(Y);
+                Array.Copy(src, 0, data_buf, 24, 4);
+
+                src = intToBytes(Z);
+                Array.Copy(src, 0, data_buf, 28, 4);
+
+                data_buf[32] = 0x0f;
+                data_buf[33] = 0xff;
+
+                data_buf[34] = 0x12;
+                data_buf[35] = 0x34;
+                data_buf[36] = 0x56;
+                data_buf[37] = 0x78;
+      
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "发送失败");
+            }
+            UdpSendData(data_buf, data_buf.Length, UdpInit.RemotePoint);
+            return data_buf;
+}
         public static byte [] SendRead()
         {
             byte[] data;
@@ -161,8 +232,6 @@ namespace WpfApplication3
         }
 
 
-
-
         public static void Send()
         {
            
@@ -193,15 +262,15 @@ namespace WpfApplication3
                             //Data = Mcu.ModbusUdp.MBReqWrite(array);
                             Data=SendRead();
                             break;
-                        case 103:                  //write_ram
+                        //case 103:                  //write_ram
                             //addr = 0;
                             //len = 10;
                             //data = new byte[0];
                             //array = Mcu.ModbusUdp.ArrayAdd(addr, len, data);
                             //Data = Mcu.ModbusUdp.MBReqRead(array);
-
-                             Data = SendRead();
-                            break;
+                           
+                            // Data = SendWrite(Window1.sliderPositionValue);
+                          //  break;
                         case 104:                //read_falsh
                             //addr = 0;
                             //len = 32;
@@ -237,9 +306,7 @@ namespace WpfApplication3
                             break;
 
                     }
-
-                    UdpSend.UdpSendData(Data, Data.Length, UdpInit.RemotePoint);
-                    
+                    UdpSend.UdpSendData(Data, Data.Length, UdpInit.RemotePoint);                    
                 }
                 Thread.Sleep(1000);
             }

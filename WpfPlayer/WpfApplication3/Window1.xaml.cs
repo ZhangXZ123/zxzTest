@@ -105,8 +105,8 @@ namespace WpfApplication3
             MessageBox.Show("影片播放结束");
 
             //单曲循环
-            mediaElement.Position = new TimeSpan();
-            mediaElement.Play();
+            //mediaElement.Position = new TimeSpan();
+            //mediaElement.Play();
 
             //列表循环
             //for (int i = 0; i < MainWindow.list.Count; i++)

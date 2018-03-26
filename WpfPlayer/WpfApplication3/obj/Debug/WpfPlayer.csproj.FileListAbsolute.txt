@@ -19,12 +19,14 @@ D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfPlayer.csproj.ResolveCom
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\Resources\GlassButton.baml
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\Resources\slider.baml
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\MainWindow.g.cs
+D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\RegisterWin.g.cs
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\Window1.g.cs
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\Window2.g.cs
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\App.g.cs
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfApplication3_MarkupCompile.cache
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfApplication3_MarkupCompile.lref
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\MainWindow.baml
+D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\RegisterWin.baml
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\Window1.baml
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\Window2.baml
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfApplication3.g.resources
@@ -32,4 +34,8 @@ D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfApplication3.Properties.
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfPlayer.csproj.GenerateResource.Cache
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfApplication3.exe
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfApplication3.pdb
+D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\WpfApplication3.exe.manifest
+D:\git\WpfPlayer\WpfPlayer\WpfApplication3\bin\Debug\WpfApplication3.application
+D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfApplication3.exe.manifest
+D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfApplication3.application
 D:\git\WpfPlayer\WpfPlayer\WpfApplication3\obj\Debug\WpfPlayer.csprojResolveAssemblyReference.cache

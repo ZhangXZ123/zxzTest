@@ -18,6 +18,7 @@ namespace WpfApplication3
       public static bool flagValue = false;
       public static double TimeCode;
       public static string strTimeCode;
+      public static string uuid;
       public byte monitorTickRx;
       public byte monitorTickTimeOut;
       public static bool registerFlag;
@@ -59,9 +60,6 @@ namespace WpfApplication3
                 else
                 {
                     //发送UDP心跳包
-                    
-
-
                     if (monitorTickRx != monitorTick)
                     {
                         if (monitorTickRx > 0)
@@ -139,18 +137,25 @@ namespace WpfApplication3
 
             if (RecData[0] == 0xff && RecData[1] == 0x6a)       //判断uuid应答
             {
-                string str = System.Text.Encoding.Default.GetString(RecData);
+                uuid = "";
+                //userCode = Encoding.ASCII.GetString(RecData);
+                for (int i = 4; i < 28; i++)
+                {
+                    uuid += RecData[i].ToString("X2");
+                }
+                Debug.WriteLine(uuid);
                 //monitorTickRx = RecData[2];
                 if (registerFlag==true)      //将初始uuid保存在文件当中
-                {
-                    File.WriteAllText(@"C: \Users\shuqee\Desktop\shuqee.bin",str);
+                {                             
+                    //File.WriteAllText(@"C:\Users\shuqee\Desktop\shuqee.bin",uuid);
+                    File.WriteAllText(Directory.GetCurrentDirectory() + @"\shuqee.bin",uuid);
                     registerFlag = false;
                 }
 
                 Debug.WriteLine("校验uuid");
                 
                 
-                if(str==Module.uuidFile)      //判断uuid是否与初始的一致
+                if(uuid==Module.uuidFile)      //判断uuid是否与初始的一致
                 {
                     MessageBox.Show("uuid正确");
                     //Thread.Sleep(1000);
@@ -164,9 +169,9 @@ namespace WpfApplication3
                 }
             }
 
-            if (RecData[0] == 0xff && RecData[1] == 0x68)
+            if (RecData[0] == 0xff && RecData[1] == 0x68)     //校验日期
             {
-                MessageBox.Show("校验日期");
+                //MessageBox.Show("校验日期");
                 string reyear = "20" + RecData[6];
                 string remonth = RecData[7].ToString();
                 string reday = RecData[8].ToString();
@@ -185,9 +190,31 @@ namespace WpfApplication3
 
                 TimeSpan ts = getDate - dateNow;
                 int getday = ts.Days;
-                MessageBox.Show(getday.ToString());
-                MessageBox.Show("剩余天数为{0}",getday.ToString());
-            }
+               // MessageBox.Show(getday.ToString());
+                //MessageBox.Show("剩余天数为{0}",getday.ToString());
+
+                switch (getday)
+                {
+                    case 9:
+                        MessageBox.Show("提示：使用期限还有10天");
+                        break;
+                    case 5:
+                        MessageBox.Show("提示：使用期限还有6天");
+                        break;
+                    case 2:
+                        MessageBox.Show("提示：使用期限还有3天");
+                        break;
+                    case 1:
+                        MessageBox.Show("提示：使用期限还有2天");
+                        break;
+                    case 0:
+                      //  MessageBox.Show("提示：使用期限还有1天");
+                        break;
+                    default:
+                        Module.sendCheckData();
+                        break;
+                }
+            }  //校验日期结尾
 
 
             RecData = ModbusUdp.MBRsp(RecData);
@@ -219,8 +246,6 @@ namespace WpfApplication3
                         Thread.Sleep(1000);
                     }
                 }
-
-               
 
             }
 

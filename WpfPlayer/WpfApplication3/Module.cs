@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace WpfApplication3
         public static byte[] effectFile;
         public static string uuidFile;
 
-
+        
         /// <summary>
         /// udp发送动作数据与特效数据函数
         /// </summary>
@@ -99,7 +100,9 @@ namespace WpfApplication3
             {
                 //读取校验文件“shuqee.bin”
                 //byte[] uuidFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\shuqee.bin");
-                 uuidFile = File.ReadAllText(@"C: \Users\shuqee\Desktop\shuqee.bin");
+                //uuidFile = File.ReadAllText(@"C: \Users\shuqee\Desktop\shuqee.bin");
+                uuidFile=File.ReadAllText(Directory.GetCurrentDirectory() + @"\shuqee.bin");
+                Debug.WriteLine(uuidFile+"读文件");
             }
             catch
             {
@@ -367,13 +370,13 @@ namespace WpfApplication3
         {
             try
             {
-                actionFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\A-D");                
-                //actionFile = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\A-D");
+                //actionFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\A-D");                
+                actionFile = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\A-D");
                // actionFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-D");
                 try
                 {
-                     effectFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\A-T");
-                    //effectFile = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\A-T");
+                    // effectFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\A-T");
+                    effectFile = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\A-T");
                     //effectFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-T");
                 }
                 catch
