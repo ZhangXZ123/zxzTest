@@ -30,16 +30,33 @@ namespace WpfApplication3
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            if(button.Content.ToString()=="上升" )
+            byte[] data;
+            ushort addr;
+            ushort len;
+            byte[] array;          //data+addr+len 
+            byte[] Data;           //最终发送的数据         
+            addr = 0;
+            len = 10;
+            //data = new byte[len];
+            
+            if (button.Content.ToString()=="上升" )
             {
                 button.Content = "下降";
-                module.SendBytesData(Module.com1,255,255,255,0,0);
+                data =new byte[10]{ 255, 255, 255,0,0,0,0,0,0,0};
+                array = Mcu.ModbusUdp.ArrayAdd(addr, len, data);
+                Data = Mcu.ModbusUdp.MBReqWrite(array);
+                UdpSend.UdpSendData(Data, Data.Length, UdpInit.RemotePoint);
+               // module.SendBytesData(Module.com1,255,255,255,0,0);
                
             }
             else
             {
                 button.Content = "上升";
-                module.SendBytesData(Module.com1, 0, 0, 0, 0, 0);
+                data = new byte[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                array = Mcu.ModbusUdp.ArrayAdd(addr, len, data);
+                Data = Mcu.ModbusUdp.MBReqWrite(array);
+                UdpSend.UdpSendData(Data, Data.Length, UdpInit.RemotePoint);
+               // module.SendBytesData(Module.com1, 0, 0, 0, 0, 0);
                
             }
         }

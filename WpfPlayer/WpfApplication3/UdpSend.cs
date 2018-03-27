@@ -29,8 +29,8 @@ namespace WpfApplication3
         {
           
             UdpInit.mySocket.SendTo(data, len, SocketFlags.None, ip);
-            Debug.WriteLine("Send HighData...{0}",count++);
-            Debug.WriteLine(ModbusUdp.ByteToHexStr(data)+"mo");
+            Debug.WriteLine("Send Data{0}",count++);
+            Debug.WriteLine(ModbusUdp.ByteToHexStr(data));
             
         }
 
@@ -42,7 +42,7 @@ namespace WpfApplication3
             byte[] array;          //data+addr+len 
             byte[] Data;           //最终发送的数据
             pos=pos*1000;
-            Debug.WriteLine(pos);
+            //Debug.WriteLine(pos);
             addr = 0;
             len = 10;
             data = new byte[len];       
@@ -71,6 +71,11 @@ namespace WpfApplication3
 
         }
 
+        /// <summary>
+        /// int整型转换成byte数组
+        /// </summary>
+        /// <param name="value">传入的整型参数值</param>
+        /// <returns></returns>
         public static byte[] intToBytes(int value)
         {
             byte[] src = new byte[4];
@@ -81,6 +86,14 @@ namespace WpfApplication3
             return src;
         }
 
+
+        /// <summary>
+        /// 三合一驱动器发送指令
+        /// </summary>
+        /// <param name="data1">X轴数据</param>
+        /// <param name="data2">Y轴数据</param>
+        /// <param name="data3">Z轴数据</param>
+        /// <returns></returns>
         public static byte[] QuDong(byte data1,byte data2,byte data3)
         {
             byte[] data_buf = new byte[42];
@@ -140,7 +153,9 @@ namespace WpfApplication3
             }
             UdpSendData(data_buf, data_buf.Length, UdpInit.RemotePoint);
             return data_buf;
-}
+        }
+
+
         public static byte [] SendRead()
         {
             byte[] data;
@@ -157,7 +172,6 @@ namespace WpfApplication3
             Data = Mcu.ModbusUdp.MBReqRead(array);
 
             return Data;
-
         }
 
         public static byte [] SendWriteChip()
@@ -232,9 +246,11 @@ namespace WpfApplication3
         }
 
 
+        /// <summary>
+        /// 根据功能码来判断要发送的指令
+        /// </summary>
         public static void Send()
-        {
-           
+        {          
             //byte[] data ;
             //ushort addr ;      
             //ushort len ;
@@ -247,45 +263,21 @@ namespace WpfApplication3
                 {
                     switch (flagSend)              //发送标志
                     {
-                        case 101:
-                        //addr = 0;
-                        //len = 10;
-                        //data = new byte[len];
-                        //array = Mcu.ModbusUdp.ArrayAdd(addr, len, data);
+                        case 101:                       
                         Data = Mcu.ModbusUdp.MBReqMonitor(1);
                             break;
-                        case 102:                   //read_ram
-                            //addr = 0;
-                            //len = 10;
-                            //data = new byte[len];
-                            //array = Mcu.ModbusUdp.ArrayAdd(addr, len, data);
-                            //Data = Mcu.ModbusUdp.MBReqWrite(array);
+                        case 102:                   //read_ram                           
                             Data=SendRead();
                             break;
                         //case 103:                  //write_ram
-                            //addr = 0;
-                            //len = 10;
-                            //data = new byte[0];
-                            //array = Mcu.ModbusUdp.ArrayAdd(addr, len, data);
-                            //Data = Mcu.ModbusUdp.MBReqRead(array);
                            
                             // Data = SendWrite(Window1.sliderPositionValue);
-                          //  break;
-                        case 104:                //read_falsh
-                            //addr = 0;
-                            //len = 32;
-                            //data = new byte[len];
-                            //array = Mcu.ModbusUdp.ArrayAdd(addr, len, data);
-                            //Data = Mcu.ModbusUdp.MBReqWriteChip(array);
+                            // break;
+                        case 104:                //read_falsh                           
                             Data = SendReadChip();
                             flagSend = 0;
                             break;
-                        case 105:               //write_falsh
-                            //addr = 0;
-                            //len = 32;
-                            //data = new byte[0];
-                            //array = Mcu.ModbusUdp.ArrayAdd(addr, len, data);
-                            //Data = Mcu.ModbusUdp.MBReqReadChip(array);
+                        case 105:               //write_falsh                           
                             Data = SendWriteChip();
                             break;
                         case 106:             //GetId
@@ -293,18 +285,12 @@ namespace WpfApplication3
                             Data = SendGetId();
                             flagSend = 0;
                             break;
-                        case 107:            //GetTimeCode
-                            //addr = 0;
-                            //len = 4;
-                            //data = new byte[0];
-                            //array = Mcu.ModbusUdp.ArrayAdd(addr, len, data);
-                            //Data = Mcu.ModbusUdp.MBReqGetTimeCode(array);
+                        case 107:            //GetTimeCode                           
                             Data = SendGetTimeCode();
                             break;
                         default:                        
                             Data = new byte[0];
                             break;
-
                     }
                     UdpSend.UdpSendData(Data, Data.Length, UdpInit.RemotePoint);                    
                 }

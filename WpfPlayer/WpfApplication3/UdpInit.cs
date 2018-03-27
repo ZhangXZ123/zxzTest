@@ -24,8 +24,7 @@ namespace WpfApplication3
         /// udp初始化
         /// </summary>
         public  void  udpInit()
-        {
-        
+        {        
             IPAddress ip;
             int port;
             string localIp;
@@ -34,10 +33,11 @@ namespace WpfApplication3
 
             if (localIp=="127.0.0.1")
             {
-                MessageBox.Show("网络没连接");
+                MessageBox.Show("网络没连接,请连接网络");
                 Debug.Write("获取不到IP地址");
             }
 
+            //判断能否获取到ip地址
             if(splitIp[0]=="169")
             {
                 SetNetworkAdapter();
@@ -68,13 +68,12 @@ namespace WpfApplication3
             ip = IPAddress.Broadcast;
             port = 1030;
             IPEndPoint ipep = new IPEndPoint(ip, port);
-             BroadcastRemotePoint = (EndPoint)(ipep);
+            BroadcastRemotePoint = (EndPoint)(ipep);
             //设置客户机IP，默认为广播地址
             RemotePoint = (EndPoint)(ipep);
 
             //允许广播
             mySocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, 1);
-
             UdpConnect myUdpConnect = new UdpConnect(); 
         }
 
@@ -95,7 +94,7 @@ namespace WpfApplication3
 
                 //设置ip地址和子网掩码 
                 inPar = mo.GetMethodParameters("EnableStatic");
-                inPar["IPAddress"] = new string[] { "192.168.1.112", "192.168.1.249" };// 1.备用 2.IP
+                inPar["IPAddress"] = new string[] { "192.168.1.112", "192.168.1.249" }; // 1.备用 2.IP
                 inPar["SubnetMask"] = new string[] { "255.255.255.0", "255.255.255.0" };
                 outPar = mo.InvokeMethod("EnableStatic", inPar, null);
 

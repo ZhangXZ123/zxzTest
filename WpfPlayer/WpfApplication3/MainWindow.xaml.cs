@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Windows.Interop;
 using System.IO.Ports;
+using System.Diagnostics;
 
 namespace WpfApplication3
 {
@@ -32,15 +33,16 @@ namespace WpfApplication3
         Window1 win = new Window1();
         DispatcherTimer timer = null;
         DispatcherTimer timer1 = null;
-        Module module = new Module();      
+        Module module = new Module();
+        int count;     
         //private Mcu.McuTest myMcuTest = new Mcu.McuTest(); //for test class mcu
         UdpInit  myUdpInit = new UdpInit();
         
         public MainWindow()
         {        
             InitializeComponent();
-            Module.readFile();
-            Module.ReadUuidFile();
+            Module.readFile();            
+            Module.readUuidFile();
             myUdpInit.udpInit();
 
 
@@ -175,8 +177,6 @@ namespace WpfApplication3
         /// <summary>
         /// 停止按钮
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void stop_Click(object sender, RoutedEventArgs e)
         {
             //this.mediaElement.Stop();
@@ -187,7 +187,9 @@ namespace WpfApplication3
                 timer.Stop();
             }
             catch
-            { }
+            {
+
+            }
             //关闭定时器
             listBox.IsEnabled = true;
         }
@@ -196,14 +198,12 @@ namespace WpfApplication3
 
 
         /// <summary>
-        /// 定时器开启事件
+        /// 定时器开启事件,显示时间码
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void timer_tick(object sender, EventArgs e)
         { 
             //Slider.Value = Window1.sliderPositionValue;        
-            ////textBox.Text = Window1.sliderPositionValue.ToString();
+            //textBox.Text = Window1.sliderPositionValue.ToString();
             //Slider.Maximum = Window1.sliderMaximum;           
             //textBox1.Text = Window1.currenTime+"/"+ Window1.totalTime;            
             //module.FlimValue(Window1.sliderPositionValue);
@@ -213,48 +213,45 @@ namespace WpfApplication3
             //textBox1.Text = UdpConnect.strTimeCode;
         }
 
+        /// <summary>
+        /// 显示播放进度，发送动作数据
+        /// </summary>
         private void timer1_tick(object sender, EventArgs e)
         {
             Slider.Value = Window1.sliderPositionValue;        
-            ////textBox.Text = Window1.sliderPositionValue.ToString();
+            //textBox.Text = Window1.sliderPositionValue.ToString();
             Slider.Maximum = Window1.sliderMaximum;           
             textBox1.Text = Window1.currenTime+"/"+ Window1.totalTime;            
-           // module.FlimValue(Window1.sliderPositionValue);
-
-            //label1.Content = UdpConnect.strTimeCode;
-
-            //textBox1.Text = UdpConnect.strTimeCode;
+            //module.FlimValue(Window1.sliderPositionValue);
+            UdpSend.SendWrite(Window1.sliderPositionValue);
+            count++;
+            Debug.WriteLine("动作帧数"+count);
         }
 
 
-        ///// <summary>
-        ///// 将总秒数转换成时间格式00:00:00
-        ///// </summary>
-        ///// <param name="timer">传入的秒数</param>
-        //private void timerChange(int totalTime)
-        //{
-        //    int hour = totalTime / 3600;
-        //    int second = totalTime % 3600;
-        //    int mintue = second / 60;
-        //    second = second % 60;
-        //    textBox1.Text = Window1.currenTime + "/" + hour.ToString() + ":" + mintue.ToString() + ":" + second.ToString();
-        //}
-
-
+        /// <summary>
+        /// 将总秒数转换成时间格式00:00:00
+        /// </summary>
+        /// <param name="timer">传入的秒数</param>
+        /*
+        private void timerChange(int totalTime)
+        {
+            int hour = totalTime / 3600;
+            int second = totalTime % 3600;
+            int mintue = second / 60;
+            second = second % 60;
+            textBox1.Text = Window1.currenTime + "/" + hour.ToString() + ":" + mintue.ToString() + ":" + second.ToString();
+        }
+        */
 
         /// <summary>
         /// 点击listbox列表，点击每一项都触发此方法
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-            System.Windows.MessageBox.Show(list[listBox.SelectedIndex]);
-            
-           // fileName= @"D:\电影\"+listBox.SelectedItem.ToString();          
-            fileName = list[listBox.SelectedIndex];
-             
+        {            
+            System.Windows.MessageBox.Show(list[listBox.SelectedIndex]);            
+            //fileName= @"D:\电影\"+listBox.SelectedItem.ToString();          
+            fileName = list[listBox.SelectedIndex];             
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -266,8 +263,6 @@ namespace WpfApplication3
         /// <summary>
         /// 快进
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void fastForward_Click(object sender, RoutedEventArgs e)
         {
             win.FastForward();
@@ -277,8 +272,6 @@ namespace WpfApplication3
         /// <summary>
         /// 快退
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void back_Click(object sender, RoutedEventArgs e)
         {
             win.Back();
@@ -288,24 +281,20 @@ namespace WpfApplication3
         /// <summary>
         /// 拖动进度条对播放状态进行控制
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Slider_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-           // System.Windows.MessageBox.Show(Slider.Value.ToString());
+            //System.Windows.MessageBox.Show(Slider.Value.ToString());
             int forwardPosition = (int)Slider.Value;
-            win.sliderChanged(forwardPosition);
-            
+            win.sliderChanged(forwardPosition);            
             //win.FastForward();
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
             //module.com1.Close();
-            //System.Windows.MessageBox.Show(  MainWindow.fileName.Substring(0,MainWindow.fileName.LastIndexOf(".")));
+            //System.Windows.MessageBox.Show(MainWindow.fileName.Substring(0,MainWindow.fileName.LastIndexOf(".")));
             Window2 win2 = new Window2();
-            win2.ShowDialog();
-            //module.SendBytesData(module.com1,255,255,2,2,2);
+            win2.ShowDialog();            
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -329,6 +318,15 @@ namespace WpfApplication3
 
             RegisterWin win3 = new RegisterWin();
             win3.Show();
+        }
+
+
+        /// <summary>
+        /// 主窗体关闭后，关闭所有进程
+        /// </summary>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
         }
     }
 }

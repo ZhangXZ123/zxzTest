@@ -14,19 +14,19 @@ namespace WpfApplication3
 {
     public class Module
     {
-        public int returnData;                       //定义全局变量returnData
-                                                     //public MainWindow mainwindow = new MainWindow();
-        public static bool changeWindow;             //定义静态变量
-        public static byte[] chipID = new byte[12];  //用于存储shuqee.bin文件的数据
+        public int returnData;                         //定义全局变量returnData
+                                                       //public MainWindow mainwindow = new MainWindow();
+        public static bool changeWindow;               //定义静态变量
+        public static byte[] chipID = new byte[12];    //用于存储shuqee.bin文件的数据
         public static byte YY;
         public static byte MM;
         public static byte DD;
         public static byte HH;
         public static byte mm;
-        public static byte deadlineYY;             //注册后的期限年
-        public static byte deadlineMM;             //注册后的期限月
-        public static byte deadlineDD;             //注册后的期限日
-        public static byte deadlineOrPermanent;    //注册码是否为永久码 
+        public static byte deadlineYY;                 //注册后的期限年
+        public static byte deadlineMM;                 //注册后的期限月
+        public static byte deadlineDD;                 //注册后的期限日
+        public static byte deadlineOrPermanent;        //注册码是否为永久码 
         public static SerialPort com1 = new SerialPort();
         public static byte[] actionFile;
         public static byte[] effectFile;
@@ -79,22 +79,26 @@ namespace WpfApplication3
         public static void GetNowTime()
         {
             System.DateTime currentDateTime = new System.DateTime();
-            currentDateTime = System.DateTime.Now;    //获取当前时间年月日时分秒
-            //int years = currentTime.Year;         //获取当前年
-            //int months = currentTime.Month;       //获取当前月
-            //int days = currentTime.Day;           //获取当前日
+            currentDateTime = System.DateTime.Now;                      //获取当前时间年月日时分秒
+            //int years = currentTime.Year;                             //获取当前年
+            //int months = currentTime.Month;                           //获取当前月
+            //int days = currentTime.Day;                               //获取当前日
 
             string strYear = currentDateTime.ToString("yy");             //获取当前年的后两位
 
-            YY = Convert.ToByte(strYear);           //将字符串strYear转换成byte型             
+            YY = Convert.ToByte(strYear);               //将字符串strYear转换成byte型             
             MM = (byte)currentDateTime.Month;           //将int型当前月转换成byte型
             DD = (byte)currentDateTime.Day;             //将int型当前日转换成byte型
-            HH = (byte)currentDateTime.Hour;       //将int型当前时转换成byte型 
-            mm = (byte)currentDateTime.Minute;     //将int型当前分转换成byte型
+            HH = (byte)currentDateTime.Hour;            //将int型当前时转换成byte型 
+            mm = (byte)currentDateTime.Minute;          //将int型当前分转换成byte型
 
         }
 
-        public static void ReadUuidFile()
+
+        /// <summary>
+        /// 读取校验文件
+        /// </summary>
+        public static void readUuidFile()
         {
             try
             {
@@ -109,7 +113,6 @@ namespace WpfApplication3
                 MessageBox.Show("校验文件不存在，请把校验文件放在软件当前目录");
             }
             
-
          }
 
 

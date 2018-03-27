@@ -24,9 +24,9 @@ namespace WpfApplication3
         MediaElement mediaElement = new MediaElement();
         //MainWindow mainwindow = new MainWindow();
         DispatcherTimer timer = null;
-        public static double sliderPositionValue;
-        public static double sliderMaximum;
-        public static int playstate;
+        public static double sliderPositionValue;          //进度条的当前位置                
+        public static double sliderMaximum;                //进度条的最大值
+        public static int playstate;                       //影片的播放状态  
         public static string currenTime;
         public static string totalTime;
 
@@ -88,7 +88,6 @@ namespace WpfApplication3
 
         public void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-
             mediaElement.Width = ActualWidth;
             mediaElement.Height = ActualHeight;
         }
@@ -147,8 +146,7 @@ namespace WpfApplication3
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void mediaElement_MediaOpened(object sender, RoutedEventArgs e)
-        {
-            // MessageBox.Show("22");
+        {            
             sliderMaximum = mediaElement.NaturalDuration.TimeSpan.TotalSeconds;
             totalTime = mediaElement.NaturalDuration.ToString().Substring(0, 8);
             //媒体文件打开成功
@@ -176,13 +174,18 @@ namespace WpfApplication3
             currenTime = mediaElement.Position.ToString().Substring(0, 8);
         }
 
+        /// <summary>
+        /// 快进
+        /// </summary>
         public void FastForward()
         {
             mediaElement.Position = mediaElement.Position + TimeSpan.FromSeconds(10);
         }
 
 
-
+        /// <summary>
+        /// 快退
+        /// </summary>
         public void Back()
         {
             mediaElement.Position = mediaElement.Position - TimeSpan.FromSeconds(10);
@@ -191,19 +194,14 @@ namespace WpfApplication3
         /// <summary>
         /// 双击窗体，退出全屏
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void myContent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (FullScreenHelper.IsFullscreen(this))
                 FullScreenHelper.ExitFullscreen(this);
             else
                 FullScreenHelper.GoFullscreen(this);
-
             //this.Visibility = Visibility.Hidden;
             this.Hide();
-
         }
-
     }
 }
