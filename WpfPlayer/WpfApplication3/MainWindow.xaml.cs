@@ -31,10 +31,9 @@ namespace WpfApplication3
         
         public static string fileName="";
         Window1 win = new Window1();
-        DispatcherTimer timer = null;
-        DispatcherTimer timer1 = null;
-        Module module = new Module();
-        int count;     
+        DispatcherTimer timer = null;            //开启定时器接收时间码
+        DispatcherTimer timer1 = null;           //开启定时器更新播放影片时间
+        Module module = new Module();           
         //private Mcu.McuTest myMcuTest = new Mcu.McuTest(); //for test class mcu
         UdpInit  myUdpInit = new UdpInit();
         
@@ -45,7 +44,6 @@ namespace WpfApplication3
             Module.readUuidFile();
             myUdpInit.udpInit();
 
-
             //udp程序启动定时器
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(0.05);   //定时器周期为50ms 
@@ -54,7 +52,7 @@ namespace WpfApplication3
 
             //Module.readFile();
             InitListBox();            // disable for bug
-            // Module.SerialInit();
+            //Module.SerialInit();
             //System.Windows.Controls.Slider.AddHandler(Slider.MouseLeftButtonUp,new System.Windows.Forms.MouseEventHandler(slider_MouseLeftButtonUp),true);     
             //mediaElement.LoadedBehavior = MediaState.Manual;
             //(Content as Grid).Children.Add(mediaElement);
@@ -67,10 +65,8 @@ namespace WpfApplication3
             //else
             //    FullScreenHelper.GoFullscreen(this);
             // mediaElement.Pause(); 
-            //win.Visibility = Visibility.Visible;
-            
+            //win.Visibility = Visibility.Visible;            
             win.pause();
-            
         }
 
         public static List <string> list=new List<string >();
@@ -223,9 +219,7 @@ namespace WpfApplication3
             Slider.Maximum = Window1.sliderMaximum;           
             textBox1.Text = Window1.currenTime+"/"+ Window1.totalTime;            
             //module.FlimValue(Window1.sliderPositionValue);
-            UdpSend.SendWrite(Window1.sliderPositionValue);
-            count++;
-            Debug.WriteLine("动作帧数"+count);
+           // UdpSend.SendWrite(Window1.sliderPositionValue);            
         }
 
 

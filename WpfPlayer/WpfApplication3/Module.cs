@@ -375,7 +375,8 @@ namespace WpfApplication3
             {
                 //actionFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\A-D");                
                 actionFile = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\A-D");
-               // actionFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-D");
+                // actionFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-D");
+                
                 try
                 {
                     // effectFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\A-T");

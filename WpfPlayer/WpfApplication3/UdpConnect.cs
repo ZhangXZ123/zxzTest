@@ -19,8 +19,8 @@ namespace WpfApplication3
         public static double TimeCode;
         public static string strTimeCode;
         public static string uuid;
-        public byte monitorTickRx;
-        public byte monitorTickTimeOut;
+        public byte monitorTickRx;             
+        public byte monitorTickTimeOut;         
         public static bool registerFlag;
 
         UdpSend mysend = new UdpSend();
@@ -29,7 +29,7 @@ namespace WpfApplication3
         public UdpConnect()
         {
             Thread ThreadUdpServer = new Thread(new ThreadStart(this.UdpServerTask));
-            ThreadUdpServer.IsBackground = true; //设置为后台线程
+            ThreadUdpServer.IsBackground = true;                                      //设置为后台线程
             ThreadUdpServer.Start();
             //构造函数
         }
@@ -67,7 +67,6 @@ namespace WpfApplication3
                         }
                     }
 
-
                     if (monitorTickTimeOut == 3)     //计时超过3秒，重新连接
                     {
                         flagValue = false;
@@ -92,7 +91,6 @@ namespace WpfApplication3
                 }
                 Thread.Sleep(1000);
             }
-
         }
 
         delegate void ReceiveCallback(int rlen, byte[] data);
@@ -106,7 +104,6 @@ namespace WpfApplication3
             Debug.WriteLine(ModbusUdp.ByteToHexStr(RecData));
             if (RecData[0] == 0xff && RecData[1] == 0x6c)
             {
-
                 //要发送数据格式
                 double hours = (RecData[6]) * 60 * 60;
                 double minutes = (RecData[7]) * 60;
@@ -119,13 +116,12 @@ namespace WpfApplication3
                 string strseconds = RecData[8].ToString().Length < 2 ? "0" + RecData[8].ToString() : RecData[8].ToString();
                 string strframe = RecData[9].ToString().Length < 2 ? "0" + RecData[9].ToString() : RecData[9].ToString();
 
-                strTimeCode = strhours + ":" + strminutes + ":" + strseconds + ":" + strframe;
+                strTimeCode = strhours + ":" + strminutes + ":" + strseconds;
                 //strTimeCode = RecData[6].ToString() + ":" + RecData[7].ToString() + ":" + RecData[8].ToString() + ":" + RecData[9].ToString();
                 TimeCode = hours + minutes + seconds + frame;
                 UdpSend.SendWrite(TimeCode);
 
                 //UdpSend.flagSend = (byte)Mcu.ModbusUdp.MBFunctionCode.Write;
-
             }
 
             if (RecData[0] == 0xff && RecData[1] == 0x65)        //判断心跳应答
@@ -147,8 +143,6 @@ namespace WpfApplication3
                     File.WriteAllText(Directory.GetCurrentDirectory() + @"\shuqee.bin", uuid);
                     registerFlag = false;
                 }
-
-                Debug.WriteLine("校验uuid");
 
                 if (uuid == Module.uuidFile)      //判断uuid是否与初始的一致
                 {

@@ -26,7 +26,7 @@ namespace WpfApplication3
         DispatcherTimer timer = null;
         public static double sliderPositionValue;          //进度条的当前位置                
         public static double sliderMaximum;                //进度条的最大值
-        public static int playstate;                       //影片的播放状态  
+        public static int playstate;                       //影片的播放状态  playstate=0没播放，playstate=1正在播放中，playstate=2暂停
         public static string currenTime;
         public static string totalTime;
 
@@ -48,6 +48,7 @@ namespace WpfApplication3
 
             mediaElement.Close();
             playstate = 0;
+            timer.Stop();
             //this.Close();
             //listBox.IsEnabled = true;
         }
@@ -100,9 +101,11 @@ namespace WpfApplication3
         /// <param name="e"></param>
         private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
-            //mediaElement.Stop();
+            this.mediaElement.Stop();
+            mediaElement.Close();
             MessageBox.Show("影片播放结束");
-
+            playstate = 0;
+            timer.Stop();
             //单曲循环
             //mediaElement.Position = new TimeSpan();
             //mediaElement.Play();
@@ -161,12 +164,15 @@ namespace WpfApplication3
         {
             //获取影片当前状态总秒数
             sliderPositionValue = mediaElement.Position.TotalSeconds;
+            UdpSend.SendWrite(sliderPositionValue);
+
+            //UdpSend.QuDong(sliderPositionValue);
             //sliderPositionValue = mediaElement.Position.
             //获取影片当前状态小时
             //string hour = mediaElement.Position.Hours.ToString();
-            ////获取影片当前状态分钟
+            //获取影片当前状态分钟
             //string minute = mediaElement.Position.Minutes.ToString();
-            ////获取影片当前状态秒
+            //获取影片当前状态秒
             //string second = mediaElement.Position.Seconds.ToString();
             //totalTime = hour + ":" + minute + ":" + second;
             //获取影片当前状态时间，格式为00:00:00
