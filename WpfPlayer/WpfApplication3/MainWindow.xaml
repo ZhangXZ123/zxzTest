@@ -24,20 +24,21 @@
             <ColumnDefinition Width="105"/>
             <ColumnDefinition Width="271"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="play"  Style="{StaticResource GlassButton}" Content="播放" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="50" Click="play_Click" Margin="85,0,0,39" Height="50" Background="#FF1D5BBA" />
+        <Button x:Name="play"  Style="{StaticResource GlassButton}" Content="播放" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="50" Click="play_Click" Margin="190,0,0,37" Height="50" Background="#FF1D5BBA" />
         <Slider x:Name="Slider" Style="{StaticResource Slider_CustomStyle}" Height="20" Margin="55,0,246,112" VerticalAlignment="Bottom" Grid.ColumnSpan="4" PreviewMouseUp="Slider_PreviewMouseUp"  />
         <ListBox x:Name="listBox" HorizontalAlignment="Left" Margin="30,35,0,149" Width="220" SelectionChanged="listBox_SelectionChanged" Background="#FFB0A4A4" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden">
         </ListBox>
-        <Button x:Name="pause" Style="{StaticResource GlassButton}" Content="暂停" Height="45" Margin="230,0,0,39" VerticalAlignment="Bottom" Click="pause_Click" Width="60" HorizontalAlignment="Left"/>
-        <Button x:Name="stop" Style="{StaticResource GlassButton}" Content="停止" Height="60" Margin="335,0,295,24" VerticalAlignment="Bottom" Click="stop_Click"/>
-        <Button x:Name="open" Style="{StaticResource GlassButton}" Content="打开文件" Height="53" Margin="0,0,185,32" VerticalAlignment="Bottom" Click="open_Click" HorizontalAlignment="Right" Width="60"/>
+        <Button x:Name="pause" Style="{StaticResource GlassButton}" Content="暂停" Height="45" Margin="300,0,0,37" VerticalAlignment="Bottom" Click="pause_Click" Width="60" HorizontalAlignment="Left"/>
+        <Button x:Name="stop" Style="{StaticResource GlassButton}" Content="停止" Height="60" Margin="420,0,210,27" VerticalAlignment="Bottom" Click="stop_Click"/>
+        <Button x:Name="open" Style="{StaticResource GlassButton}" Content="打开文件" Height="53" Margin="0,0,605,34" VerticalAlignment="Bottom" Click="open_Click" HorizontalAlignment="Right" Width="60"/>
         <TextBox x:Name="textBox1" Margin="70,0,0,107" TextWrapping="Wrap" HorizontalAlignment="Left" Width="120" Background="#FFBFB2B2" Height="30" VerticalAlignment="Bottom" Grid.Column="3" BorderThickness="0"/>
-        <Button x:Name="fastForward" Content="快进" Style="{StaticResource GlassButton}"  Height="60" Margin="0,0,65,37" VerticalAlignment="Bottom" Click="fastForward_Click" Width="70" HorizontalAlignment="Right"/>
-        <Button x:Name="back" Style="{StaticResource GlassButton}" Content="快退" Height="55" Margin="20,0,0,19" VerticalAlignment="Bottom" Click="back_Click" Grid.Column="3" HorizontalAlignment="Left" Width="55"/>
-        <Button x:Name="button" Style="{StaticResource GlassButton}" Content="Button" Grid.Column="3" Height="50" Margin="125,0,81,17" VerticalAlignment="Bottom" Click="button_Click" RenderTransformOrigin="0.231,-0.06"/>
+        <Button x:Name="fastForward" Content="快进" Style="{StaticResource GlassButton}"  Height="60" Margin="0,0,65,27" VerticalAlignment="Bottom" Click="fastForward_Click" Width="70" HorizontalAlignment="Right"/>
+        <Button x:Name="back" Style="{StaticResource GlassButton}" Content="快退" Height="55" Margin="5,0,0,32" VerticalAlignment="Bottom" Click="back_Click" Grid.Column="3" HorizontalAlignment="Left" Width="55"/>
+        <Button x:Name="调试" Style="{StaticResource GlassButton}" Content="调试" Grid.Column="3" Height="50" Margin="70,0,136,502" VerticalAlignment="Bottom" Click="button_Click" RenderTransformOrigin="0.231,-0.06"/>
         <Label x:Name="label" Grid.ColumnSpan="4" Content="5D影院播放系统" Height="85" Margin="470,45,246,0" VerticalAlignment="Top" FontSize="36" FontFamily="Matura MT Script Capitals" FontWeight="Bold" Foreground="#FF643838"/>
         <Label x:Name="label1" Content="" HorizontalAlignment="Right" Height="85" Margin="0,200,70,0" VerticalAlignment="Top" Width="210" FontSize="36"/>
-        <Button x:Name="button1" Content="升级" HorizontalAlignment="Left" Margin="410,380,0,0" VerticalAlignment="Top" Width="75" Click="button1_Click"/>
-        <Button x:Name="button2" Content="注册" HorizontalAlignment="Left" Height="25" Margin="545,385,0,0" VerticalAlignment="Top" Width="85" Click="button2_Click"/>
+        <Button x:Name="button1" Content="升级" HorizontalAlignment="Left" Margin="70,175,0,0" VerticalAlignment="Top" Width="75" Click="button1_Click" Grid.Column="3" Height="25"/>
+        <Button x:Name="button2" Content="注册" HorizontalAlignment="Left" Height="25" Margin="175,175,0,0" VerticalAlignment="Top" Width="85" Click="button2_Click" Grid.Column="3"/>
+        <Button x:Name="close" Style="{StaticResource GlassButton}" Content="关闭" Height="55" Margin="180,0,0,497" VerticalAlignment="Bottom" Click="close_Click" Grid.Column="3" HorizontalAlignment="Left" Width="55"/>
     </Grid>
 </Window>

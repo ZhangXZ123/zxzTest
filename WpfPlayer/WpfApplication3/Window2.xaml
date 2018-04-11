@@ -6,9 +6,30 @@
         xmlns:local="clr-namespace:WpfApplication3"
         xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" x:Class="WpfApplication3.Window2"
         mc:Ignorable="d"
-        Title="Window2" Height="300" Width="300">
-    <Grid>
-        <Button x:Name="button" Content="上升" Margin="95,95,107,129" Click="button_Click"/>
+        Title="Window2" Height="300" Width="389">
+    <Grid HorizontalAlignment="Left" Width="384" Margin="0,0,-3,0">
+        <Button x:Name="button" Content="上升" Margin="185,65,129,179" Click="button_Click"/>
+        <Button x:Name="button1" Content="特效开" HorizontalAlignment="Left" Margin="140,235,0,0" VerticalAlignment="Top" Width="70" Height="25" RenderTransformOrigin="0.444,0.8" Click="button1_Click"/>
+        <CheckBox x:Name="checkBox1" Content="吹风" HorizontalAlignment="Left" Margin="54,180,0,0" VerticalAlignment="Top" Width="46" FontSize="10"/>
+        <CheckBox x:Name="checkBox2" Content="泡泡" HorizontalAlignment="Left" Margin="100,180,0,0" VerticalAlignment="Top" Width="40" FontSize="10"/>
+        <CheckBox x:Name="checkBox3" Content="烟雾" HorizontalAlignment="Left" Margin="145,180,0,0" VerticalAlignment="Top" FontSize="10"/>
+        <CheckBox x:Name="checkBox4" Content="火焰" HorizontalAlignment="Left" Margin="190,180,0,0" VerticalAlignment="Top" Width="55" FontSize="10"/>
+        <CheckBox x:Name="checkBox5" Content="下雪" HorizontalAlignment="Left" Margin="235,180,0,0" VerticalAlignment="Top" FontSize="10"/>
+        <CheckBox x:Name="checkBox6" Content="激光" HorizontalAlignment="Left" Margin="285,180,0,0" VerticalAlignment="Top" FontSize="10"/>
+        <CheckBox x:Name="checkBox7" Content="下雨" HorizontalAlignment="Left" Margin="330,180,0,0" VerticalAlignment="Top" FontSize="10"/>
+        <CheckBox x:Name="checkBox_Copy" Content=" CA" HorizontalAlignment="Left" Margin="10,205,0,0" VerticalAlignment="Top" Width="50" FontSize="10"/>
+        <CheckBox x:Name="checkBox1_Copy" Content=" CB" HorizontalAlignment="Left" Margin="54,205,0,0" VerticalAlignment="Top" Width="36" FontSize="10"/>
+        <CheckBox x:Name="checkBox2_Copy" Content="气味" HorizontalAlignment="Left" Margin="100,205,0,0" VerticalAlignment="Top" Width="45" FontSize="10"/>
+        <CheckBox x:Name="checkBox3_Copy" Content="震动" HorizontalAlignment="Left" Margin="146,205,0,0" VerticalAlignment="Top" FontSize="10" Width="44"/>
+        <CheckBox x:Name="checkBox4_Copy" Content="扫腿" HorizontalAlignment="Left" Margin="190,205,0,0" VerticalAlignment="Top" Width="55" FontSize="10"/>
+        <CheckBox x:Name="checkBox5_Copy" Content="喷水" HorizontalAlignment="Left" Margin="238,205,0,0" VerticalAlignment="Top" FontSize="10"/>
+        <CheckBox x:Name="checkBox6_Copy" Content="喷气" HorizontalAlignment="Left" Margin="285,205,0,0" VerticalAlignment="Top" FontSize="10"/>
+        <CheckBox x:Name="checkBox7_Copy" Content="推背" HorizontalAlignment="Left" Margin="330,205,0,0" VerticalAlignment="Top" FontSize="10"/>
+        <ContentControl Content="" HorizontalAlignment="Left" Margin="105,235,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="checkBox" Content="闪电" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" Width="45" FontSize="10"/>
+        <CheckBox x:Name="checkBox8" Content="1号缸" HorizontalAlignment="Left" Margin="80,55,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <CheckBox x:Name="checkBox9" Content="2号缸" HorizontalAlignment="Left" Margin="80,80,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <CheckBox x:Name="checkBox10" Content="3号缸" HorizontalAlignment="Left" Margin="80,105,0,0" VerticalAlignment="Top" IsChecked="True"/>
 
     </Grid>
 </Window>

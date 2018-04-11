@@ -103,9 +103,11 @@ namespace WpfApplication3
         {
             this.mediaElement.Stop();
             mediaElement.Close();
-            MessageBox.Show("影片播放结束");
+            //MessageBox.Show("影片播放结束");
+            
             playstate = 0;
             timer.Stop();
+            this.Hide();
             //单曲循环
             //mediaElement.Position = new TimeSpan();
             //mediaElement.Play();

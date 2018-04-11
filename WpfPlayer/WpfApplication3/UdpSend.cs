@@ -29,11 +29,9 @@ namespace WpfApplication3
 
         public static void UdpSendData(byte[] data, int len, EndPoint ip)
         {
-
             UdpInit.mySocket.SendTo(data, len, SocketFlags.None, ip);
             Debug.WriteLine("Send Data{0}", count++);
             Debug.WriteLine(ModbusUdp.ByteToHexStr(data));
-
         }
 
         public static void SendWrite(double pos)
@@ -83,17 +81,16 @@ namespace WpfApplication3
                     data[8] = Module.effectFile[num4];                          //座椅特效  
                     data[9] = Module.effectFile[num5];                          //环境特效 
                 }
-                    Debug.WriteLine((int)(3 * (pos / 50)));
+                Debug.WriteLine((int)(3 * (pos / 50)));
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);            
+                Debug.WriteLine(e);
             }
             array = Mcu.ModbusUdp.ArrayAdd(addr, len, data);
             Data = Mcu.ModbusUdp.MBReqWrite(array);
             UdpSendData(Data, Data.Length, UdpInit.RemotePoint);
             //return Data;
-
         }
 
         /// <summary>
@@ -132,7 +129,7 @@ namespace WpfApplication3
             int Z;
 
             //实际脉冲数
-            
+
             if (num3 < Module.actionFile.Length)
             {
                 X = Module.actionFile[num1] * 1089;
@@ -145,7 +142,7 @@ namespace WpfApplication3
                 Y = 0;
                 Z = 0;
             }
-            
+
 
             //震动脉冲数
             /*
@@ -203,16 +200,14 @@ namespace WpfApplication3
 
                 src = intToBytes(Z);
                 Array.Copy(src, 0, data_buf, 28, 4);
-                
-                
+
                 //震动参数
                 data_buf[32] = 0x0f;
-                data_buf[33] = 0xff;     
+                data_buf[33] = 0xff;
                 data_buf[34] = 0x12;
-                data_buf[35] = 0x34;             
+                data_buf[35] = 0x34;
                 data_buf[36] = 0x56;
                 data_buf[37] = 0x78;
-                
 
                 /*
                 //正常播放
@@ -231,7 +226,6 @@ namespace WpfApplication3
             UdpSendData(data_buf, data_buf.Length, UdpInit.RemotePoint);
             // return data_buf;
         }
-
 
         public static byte[] SendRead()
         {

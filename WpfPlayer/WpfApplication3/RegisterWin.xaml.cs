@@ -97,7 +97,6 @@ namespace WpfApplication3
         {
             try
             {
-
                 string changeRegisterCode = textRegisterCode.Text;        //注册码文本框的字符串包含期限信息
 
                 string str1 = changeRegisterCode.Substring(0, 4);
@@ -111,7 +110,6 @@ namespace WpfApplication3
 
                 string str4 = changeRegisterCode.Substring(21, 10);
                 string strUnits = changeRegisterCode.Substring(31, 1);
-
 
                 string strAdd = changeRegisterCode.Substring(32, 2);
                 string str5 = changeRegisterCode.Substring(34, 4);
@@ -179,7 +177,6 @@ namespace WpfApplication3
             }
             catch
             {
-
                 MessageBox.Show("输入的注册码长度不正确，请检查");
             }
 

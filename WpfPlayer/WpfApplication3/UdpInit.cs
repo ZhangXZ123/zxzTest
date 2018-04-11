@@ -43,7 +43,6 @@ namespace WpfApplication3
                 SetNetworkAdapter();
             }
 
-
             //得到本机IP，设置UDP端口号    
             bool b=IPAddress.TryParse(localIp, out ip);
 
@@ -66,8 +65,8 @@ namespace WpfApplication3
 
             //设置广播地址
             ip = IPAddress.Broadcast;
-            //port = 7408;   //驱动器端口
-            port = 1030;   //中控板端口
+            //port = 7408;                                 //驱动器端口
+            port = 1030;                                   //中控板端口
             IPEndPoint ipep = new IPEndPoint(ip, port);
             BroadcastRemotePoint = (EndPoint)(ipep);
             //设置客户机IP，默认为广播地址

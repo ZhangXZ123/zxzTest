@@ -122,7 +122,6 @@ namespace WpfApplication3.Mcu
         /// <returns></returns>
         public static byte[] MBReqConnect()
         {
-
             int password = 123;
             byte[] Data = System.BitConverter.GetBytes(password);
             Array.Reverse(Data);
@@ -184,8 +183,7 @@ namespace WpfApplication3.Mcu
         /// <param name="Data"></param>
         /// <returns></returns>
         public static byte[] MBReqWriteChip( byte[] Data)
-        {
-           
+        {          
             return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.WriteChip, Data));
         }
 
@@ -199,8 +197,7 @@ namespace WpfApplication3.Mcu
         }
 
         public static byte[] MBReqGetTimeCode(byte [] Data)
-        {
-            
+        {            
             return GetADU((byte)MBAddress.Reserve, GetPDU((byte)MBFunctionCode.GetTimeCode, Data));
         }
 

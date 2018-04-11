@@ -40,7 +40,7 @@ namespace WpfApplication3
         public MainWindow()
         {        
             InitializeComponent();
-            Module.readFile();            
+            Module.readDefultFile();            
             Module.readUuidFile();
             myUdpInit.udpInit();
 
@@ -51,7 +51,7 @@ namespace WpfApplication3
             timer.Start();
 
             //Module.readFile();
-            InitListBox();            // disable for bug
+            InitListBox();                                // disable for bug
             //Module.SerialInit();
             //System.Windows.Controls.Slider.AddHandler(Slider.MouseLeftButtonUp,new System.Windows.Forms.MouseEventHandler(slider_MouseLeftButtonUp),true);     
             //mediaElement.LoadedBehavior = MediaState.Manual;
@@ -219,7 +219,7 @@ namespace WpfApplication3
             Slider.Maximum = Window1.sliderMaximum;           
             textBox1.Text = Window1.currenTime+"/"+ Window1.totalTime;            
             //module.FlimValue(Window1.sliderPositionValue);
-           // UdpSend.SendWrite(Window1.sliderPositionValue);            
+            //UdpSend.SendWrite(Window1.sliderPositionValue);            
         }
 
 
@@ -293,7 +293,7 @@ namespace WpfApplication3
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            byte[] Data=new byte[9];
+            byte[] Data = new byte[9];
             Data[0] = 0xff;
             Data[1] = 0x67;
             Data[2] = 0x00;
@@ -309,16 +309,19 @@ namespace WpfApplication3
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-
             RegisterWin win3 = new RegisterWin();
             win3.Show();
         }
-
 
         /// <summary>
         /// 主窗体关闭后，关闭所有进程
         /// </summary>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        private void close_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
         }

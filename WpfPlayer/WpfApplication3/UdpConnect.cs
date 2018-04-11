@@ -25,7 +25,6 @@ namespace WpfApplication3
 
         UdpSend mysend = new UdpSend();
 
-
         public UdpConnect()
         {
             Thread ThreadUdpServer = new Thread(new ThreadStart(this.UdpServerTask));
@@ -99,8 +98,7 @@ namespace WpfApplication3
         {
             byte[] RecData;
             RecData = new byte[rlen];
-            Array.Copy(data, 0, RecData, 0, rlen);
-            //Debug.WriteLine(RecData);
+            Array.Copy(data, 0, RecData, 0, rlen);          
             Debug.WriteLine(ModbusUdp.ByteToHexStr(RecData));
             if (RecData[0] == 0xff && RecData[1] == 0x6c)
             {
@@ -146,8 +144,7 @@ namespace WpfApplication3
 
                 if (uuid == Module.uuidFile)      //判断uuid是否与初始的一致
                 {
-                    MessageBox.Show("uuid正确");
-                    //Thread.Sleep(1000);
+                    MessageBox.Show("uuid正确");                   
                     UdpSend.flagSend = (byte)Mcu.ModbusUdp.MBFunctionCode.ReadChip;
                 }
                 //else
@@ -260,7 +257,6 @@ namespace WpfApplication3
                     int rlen = UdpInit.mySocket.ReceiveFrom(data, ref UdpInit.RemotePoint);
                     ReceiveCallback tx = SetReceiveData;
                     tx(rlen, data);
-
                 }
                 catch (Exception e)
                 {

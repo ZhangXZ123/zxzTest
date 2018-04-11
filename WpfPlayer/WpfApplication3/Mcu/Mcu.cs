@@ -249,7 +249,6 @@ namespace WpfApplication3.Mcu
                             mySocket.SendTo(data, data.Length, SocketFlags.None, RemotePoint);
                             Debug.WriteLine("Connect monitor...");
                         }
-
                     }
                     Thread.Sleep(1000);
                 }
@@ -264,7 +263,6 @@ namespace WpfApplication3.Mcu
 
                 while (true)
                 {
-
                     if (mySocket == null || mySocket.Available < 1)
                     {
                         Thread.Sleep(10);

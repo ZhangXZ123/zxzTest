@@ -23,10 +23,10 @@ namespace WpfApplication3
         public static byte DD;
         public static byte HH;
         public static byte mm;
-        public static byte deadlineYY;                 //注册后的期限年
-        public static byte deadlineMM;                 //注册后的期限月
-        public static byte deadlineDD;                 //注册后的期限日
-        public static byte deadlineOrPermanent;        //注册码是否为永久码 
+        public static byte deadlineYY;                  //注册后的期限年
+        public static byte deadlineMM;                  //注册后的期限月
+        public static byte deadlineDD;                  //注册后的期限日
+        public static byte deadlineOrPermanent;         //注册码是否为永久码 
         public static SerialPort com1 = new SerialPort();
         public static byte[] actionFile;
         public static byte[] effectFile;
@@ -284,7 +284,7 @@ namespace WpfApplication3
             {
                 byte[] bytesSend = new byte[9];
                 bytesSend[0] = 0xFF;
-                bytesSend[1] = 0x4a;
+                bytesSend[1] = 0x4A;
                 bytesSend[2] = data1;
                 bytesSend[3] = data2;
                 bytesSend[4] = data3;
@@ -298,7 +298,6 @@ namespace WpfApplication3
             catch
             {
                 MessageBox.Show("发送失败");
-
             }
         }
 
@@ -374,12 +373,41 @@ namespace WpfApplication3
             try
             {
                 //actionFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\A-D");                
-                actionFile = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\A-D");
-                // actionFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-D");
+                //actionFile = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\A-D");
+                actionFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-D");
                 
                 try
                 {
                     // effectFile = File.ReadAllBytes(@"C: \Users\shuqee\Desktop\A-T");
+                    //effectFile = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\A-T");
+                    effectFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-T");
+                }
+                catch
+                {
+                    MessageBox.Show("特效文件不存在，请把当前影片特效文件复制到与影片相同目录下");
+                    effectFile = null;
+                }
+            }
+            catch
+            {
+                MessageBox.Show("动作文件不存在，请把当前影片动作文件复制到与影片相同目录下");
+                actionFile = null;
+            }
+           // MessageBox.Show("读取完毕");
+        }
+
+
+        /// <summary>
+        /// 读取固定的A-D和A-T文件
+        /// </summary>
+        public static void readDefultFile()
+        {
+            try
+            {                              
+                actionFile = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\A-D");
+                //actionFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-D");
+                try
+                {                
                     effectFile = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\A-T");
                     //effectFile = File.ReadAllBytes(MainWindow.fileName.Substring(0, MainWindow.fileName.LastIndexOf(".")) + "-T");
                 }
@@ -394,7 +422,7 @@ namespace WpfApplication3
                 MessageBox.Show("动作文件不存在，请把A-D文件复制到当前目录");
                 actionFile = null;
             }
-           // MessageBox.Show("读取完毕");
+            
         }
 
 

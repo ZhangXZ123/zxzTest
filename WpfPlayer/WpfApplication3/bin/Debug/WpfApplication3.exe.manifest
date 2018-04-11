@@ -163,14 +163,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WpfApplication3.exe" size="84424">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WpfApplication3.exe" size="90056">
       <assemblyIdentity name="WpfApplication3" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>nKtaiUF5OE60ybH8ujk/5qOs/i8jXNfrHwtvHy2s/1M=</dsig:DigestValue>
+        <dsig:DigestValue>Aq1sLbwMntS7dL+1R0f2dMMv8pYBDvDRp1l9s4ys3cg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
